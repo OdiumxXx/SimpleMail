@@ -1,0 +1,4 @@
+SimpleMail
+==========
+
+Bukkit SimpleMail plugin
