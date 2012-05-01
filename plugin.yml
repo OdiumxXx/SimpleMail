@@ -1,0 +1,32 @@
+name: SimpleMail
+main: me.odium.simplemail.SimpleMail
+version: 0.1
+commands:
+   sendmail:
+      description: sendmail
+      permission: simplemail.send
+      usage: /sendmail <player> <message>
+   inbox:
+      description: inbox
+      permission: simplemail.inbox
+      usage: /inbox
+   readmail:
+      description: inbox
+      permission: simplemail.inbox
+      usage: /readmail <#>
+   delmail:
+      description: inbox
+      permission: simpemail.inbox
+      usage: /delmail <#>
+   searchplayer:
+      description: inbox
+      permission: simplemail.search
+      usage: /searchplayer
+   simplemail:
+      description: Menu
+      permission: simplemail.inbox
+      usage: /simplemail
+   mail:
+      description: Menu
+      permission: simplemail.inbox
+      usage: /mail
