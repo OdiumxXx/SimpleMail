@@ -1,1 +1,4 @@
-MaxInboxSize: 3
+# MaxInboxSize: Max Mailbox Size Per User
+# ShowInboxOnJoin: If inbox is not empty and player has permissions, display inbox on player join.
+MaxMailboxSize: 5
+ShowInboxOnJoin: true
