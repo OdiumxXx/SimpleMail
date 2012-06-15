@@ -1,25 +1,26 @@
 name: SimpleMail
 main: me.odium.test.simplemail
-version: 0.1
+version: 0.2
 commands:
    mail:
+      aliases: [simplemail]
       description: Display Help Menu
       permission: SimpleMail.inbox
-      usage: /delmail <id>
+      usage: /mail
    sendmail:
-      description: tester
+      description: Send mail to a user
       permission: SimpleMail.sendmail
       usage: /sendmail <player> <message>
    inbox:
-      description: inbox
+      description: View your inbox
       permission: SimpleMail.inbox
       usage: /inbox
    readmail:
-      description: readmail
+      description: Read a message
       permission: SimpleMail.inbox
       usage: /readmail <id>
    delmail:
-      description: readmail
+      description: delete a message
       permission: SimpleMail.inbox
       usage: /delmail <id>
    mailboxes:
