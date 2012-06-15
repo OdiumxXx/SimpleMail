@@ -1,9 +1,9 @@
 package me.odium.test.commands;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 
+import me.odium.test.DBConnection;
 import me.odium.test.simplemail;
 
 import org.bukkit.command.Command;
@@ -17,7 +17,9 @@ public class delmail implements CommandExecutor {
   public delmail(simplemail plugin)  {
     this.plugin = plugin;
   }
-
+  
+  DBConnection service = DBConnection.getInstance();
+  
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
     Player player = null;
     if (sender instanceof Player) {
@@ -32,7 +34,7 @@ public class delmail implements CommandExecutor {
     Connection con;
     try {
       String Playername = player.getDisplayName().toLowerCase();
-      con = DriverManager.getConnection("jdbc:sqlite:test.db");
+      con = service.Database();
       stmt = con.createStatement();
 
       rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE id='" + args[0] + "'");
@@ -45,11 +47,16 @@ public class delmail implements CommandExecutor {
       } 
       rs.close();
     } catch(Exception e) {
-      if (player == null || player.hasPermission("simplemail.admin")) {
-        System.err.println(e);
+      plugin.log.info("[SimpleMail] "+"Error: "+e);        
+      if (e.toString().contains("locked")) {
+        sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.GOLD+"The database is busy. Please wait a moment before trying again...");
+      } else if (e.toString().contains("java.lang.ArrayIndexOutOfBoundsException")) {
+        sender.sendMessage("/delmail <id>");
+      } else {
+        player.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"Error: "+plugin.WHITE+e);
       }
-      sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"This is not your message to delete or it does not exist. ");
     }
+
     return true;
   }
 }

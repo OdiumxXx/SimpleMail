@@ -1,11 +1,11 @@
 package me.odium.test.commands;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Arrays;
 
+import me.odium.test.DBConnection;
 import me.odium.test.simplemail;
 
 import org.bukkit.Bukkit;
@@ -21,6 +21,8 @@ public class sendmail implements CommandExecutor {
   public sendmail(simplemail plugin)  {
     this.plugin = plugin;
   }
+  
+  DBConnection service = DBConnection.getInstance();
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
     Player player = null;
@@ -33,8 +35,8 @@ public class sendmail implements CommandExecutor {
       }
       Connection con;
       java.sql.Statement stmt;
-      try {
-        con = DriverManager.getConnection("jdbc:sqlite:test.db");
+      try {        
+        con = service.Database();
         stmt = con.createStatement();
 
         StringBuilder sb = new StringBuilder();
@@ -99,7 +101,12 @@ public class sendmail implements CommandExecutor {
               return true;
             }
       } catch(Exception e) {
-        sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"Error: "+plugin.WHITE+e);
+        plugin.log.info("[SimpleMail] "+"Error: "+e);        
+        if (e.toString().contains("locked")) {
+          sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.GOLD+"The database is busy. Please wait a moment before trying again...");
+        } else {
+          player.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"Error: "+plugin.WHITE+e);
+        }
       }
      
     return true;    

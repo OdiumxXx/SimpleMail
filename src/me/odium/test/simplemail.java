@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class simplemail extends JavaPlugin {
-  Logger log = Logger.getLogger("Minecraft");
+  public Logger log = Logger.getLogger("Minecraft");
 
   public ChatColor GREEN = ChatColor.GREEN;
   public ChatColor RED = ChatColor.RED;
@@ -31,7 +31,7 @@ public class simplemail extends JavaPlugin {
   public ChatColor WHITE = ChatColor.WHITE; 
   public ChatColor AQUA = ChatColor.AQUA;
 
-  DBConnection DBConnection = new DBConnection(this);
+  DBConnection service = DBConnection.getInstance();
 
   public void onEnable(){    
     log.info("[" + getDescription().getName() + "] " + getDescription().getVersion() + " enabled.");
