@@ -1,7 +1,5 @@
 package me.odium.test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Logger;
@@ -49,31 +47,19 @@ public class simplemail extends JavaPlugin {
     this.getCommand("sendmail").setExecutor(new sendmail(this));
     this.getCommand("clearmailbox").setExecutor(new clearmailbox(this));
     this.getCommand("inbox").setExecutor(new inbox(this));
-    this.getCommand("mailboxes").setExecutor(new mailboxes(this));
-    
+    this.getCommand("mailboxes").setExecutor(new mailboxes(this));    
     // Create connection & table
-    Connection con;
-    java.sql.Statement stmt;
-    try{
-      Class.forName("org.sqlite.JDBC");
-      con = DriverManager.getConnection("jdbc:sqlite:test.db");
-      stmt = con.createStatement();
-      String queryC = "CREATE TABLE IF NOT EXISTS SM_Mail (id INTEGER PRIMARY KEY, sender varchar(16), target varchar(16), date timestamp, message varchar(30), read varchar(10))";
-      stmt.executeUpdate(queryC);
-    } catch(Exception e) {
-      System.err.println(e);
-    }
+   try {
+    service.setConnection();
+    service.createTable();
+   } catch(Exception e) {
+     log.info("[SimpleMail] "+"Error: "+e); 
+   }
   }
 
   public void onDisable(){ 
     log.info("[" + getDescription().getName() + "] " + getDescription().getVersion() + " disabled.");
-    try {
-      Class.forName("org.sqlite.JDBC");
-      Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
-      con.close();
-    } catch(Exception e) {
-      System.err.println(e);
-    }
+    service.closeConnection();
   }  
 
   public String myGetPlayerName(String name) { 

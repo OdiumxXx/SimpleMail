@@ -23,14 +23,19 @@ public class clearmailbox implements CommandExecutor {
     if (sender instanceof Player) {
       player = (Player) sender;
     }
-    
+
+    if (args.length != 1) {
+      sender.sendMessage("/clearmailbox <player>");
+      return true;
+    }
     java.sql.Statement stmt;
     Connection con;
     try {        
-      con = service.Database();
+      con = service.getConnection();
       stmt = con.createStatement();
       stmt.executeUpdate("DELETE FROM SM_Mail WHERE target='"+args[0].toLowerCase()+"'");
       sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.GREEN+"Mailbox Cleared.");
+      return true;
     } catch(Exception e) {
       plugin.log.info("[SimpleMail] "+"Error: "+e);        
       if (e.toString().contains("locked")) {

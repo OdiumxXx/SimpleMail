@@ -28,13 +28,14 @@ public class delmail implements CommandExecutor {
 
     if (args.length != 1) {
       sender.sendMessage("/delmail <ID>");
+      return true;
     }
     ResultSet rs;
     java.sql.Statement stmt;
     Connection con;
     try {
       String Playername = player.getDisplayName().toLowerCase();
-      con = service.Database();
+      con = service.getConnection();
       stmt = con.createStatement();
 
       rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE id='" + args[0] + "'");
@@ -46,13 +47,13 @@ public class delmail implements CommandExecutor {
         sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.GREEN+"Message Deleted.");
       } 
       rs.close();
-    } catch(Exception e) {
-      plugin.log.info("[SimpleMail] "+"Error: "+e);        
-      if (e.toString().contains("locked")) {
-        sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.GOLD+"The database is busy. Please wait a moment before trying again...");
+    } catch(Exception e) {         
+      if (e.toString().contains("ResultSet closed")) {
+        sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"This is not your message to delete or it does not exist.");
       } else if (e.toString().contains("java.lang.ArrayIndexOutOfBoundsException")) {
         sender.sendMessage("/delmail <id>");
       } else {
+        plugin.log.info("[SimpleMail] "+"Error: "+e);
         player.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"Error: "+plugin.WHITE+e);
       }
     }

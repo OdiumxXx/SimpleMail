@@ -26,12 +26,11 @@ public class mailboxes implements CommandExecutor {
       player = (Player) sender;
     }
 
-
       ResultSet rs;
       java.sql.Statement stmt;
       Connection con;
       try {        
-        con = service.Database();
+        con = service.getConnection();
         stmt = con.createStatement();
         rs = stmt.executeQuery("SELECT DISTINCT target FROM SM_Mail");        
         sender.sendMessage(plugin.GOLD+"Active Inboxes: ");

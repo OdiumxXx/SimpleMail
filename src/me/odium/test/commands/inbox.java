@@ -31,8 +31,7 @@ public class inbox implements CommandExecutor {
     Connection con;
     try {
       //      con = DriverManager.getConnection("jdbc:sqlite:test.db");
-      con = service.Database();
-
+      con = service.getConnection();
       stmt = con.createStatement();
       String targetnick = player.getDisplayName(); 
       rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE target='" + targetnick.toLowerCase() + "'");        

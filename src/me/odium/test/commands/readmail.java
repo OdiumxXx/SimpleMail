@@ -28,12 +28,13 @@ public class readmail implements CommandExecutor {
 
       if (args.length != 1) {
         sender.sendMessage("/readmail <ID>");
+        return true;
       }
       ResultSet rs;
       java.sql.Statement stmt;
       Connection con;
       try {
-        con = service.Database();
+        con = service.getConnection();
         stmt = con.createStatement();
         String Playername = player.getDisplayName().toLowerCase(); 
 
@@ -48,13 +49,13 @@ public class readmail implements CommandExecutor {
           sender.sendMessage(plugin.GRAY+" Message: " +plugin.WHITE+ rs.getString("message"));
         }
         rs.close();
-      } catch(Exception e) {
-        plugin.log.info("[SimpleMail] "+"Error: "+e);        
-        if (e.toString().contains("locked")) {
-          sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.GOLD+"The database is busy. Please wait a moment before trying again...");
+      } catch(Exception e) {         
+        if (e.toString().contains("ResultSet closed")) {
+          sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"This is not your message to read or it does not exist.");
         } else if (e.toString().contains("java.lang.ArrayIndexOutOfBoundsException")) {
           sender.sendMessage("/readmail <id>");
         } else {
+          plugin.log.info("[SimpleMail] "+"Error: "+e);
           player.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"Error: "+plugin.WHITE+e);
         }
       }

@@ -32,11 +32,12 @@ public class sendmail implements CommandExecutor {
   
       if (args.length < 2) {
         sender.sendMessage("/sendmail <ExactPlayerName> <Message>");
+        return true;
       }
       Connection con;
       java.sql.Statement stmt;
       try {        
-        con = service.Database();
+        con = service.getConnection();
         stmt = con.createStatement();
 
         StringBuilder sb = new StringBuilder();

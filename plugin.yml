@@ -29,5 +29,5 @@ commands:
       usage: /mailboxes
    clearmailbox:
       description: clear an active mailbox
-      permission: SimpleMail.admin
+      permission: SimpleMail.clear
       usage: /clearmailbox <player>
