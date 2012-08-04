@@ -11,15 +11,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class inbox implements CommandExecutor {   
+public class outbox implements CommandExecutor {   
 
   public simplemail plugin;
-  public inbox(simplemail plugin)  {
+  public outbox(simplemail plugin)  {
     this.plugin = plugin;
   }
 
   DBConnection service = DBConnection.getInstance();
-  
+
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
     Player player = null;
     if (sender instanceof Player) {
@@ -30,21 +30,22 @@ public class inbox implements CommandExecutor {
     java.sql.Statement stmt;
     Connection con;
     try {
-
       con = service.getConnection();
       stmt = con.createStatement();
-      String targetnick = player.getName(); 
+      String ownernick = player.getName(); 
 
-      rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE target='" + targetnick + "'");        
-      sender.sendMessage(plugin.GOLD+"- ID ----- FROM ----------- DATE ------");
+      rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE sender='" + ownernick + "'");
+      
+      sender.sendMessage(plugin.GOLD+"- ID ----- TO ----------- DATE ------");
       while(rs.next()){
         String isread = rs.getString("read");          
         if (isread.contains("NO")) {
-          sender.sendMessage(plugin.GRAY+"  [" +plugin.GREEN+ rs.getInt("id") +plugin.GRAY+"]"+"         "+rs.getString("sender")+"          "+rs.getString("date"));            
+          sender.sendMessage(plugin.GRAY+"  [" +plugin.GREEN+ rs.getInt("id") +plugin.GRAY+"]"+"         "+rs.getString("target")+"          "+rs.getString("date"));            
         } else {
-          sender.sendMessage(plugin.GRAY+"  [" +rs.getInt("id") +plugin.GRAY+"]"+"         "+rs.getString("sender")+"          "+rs.getString("date"));
+          sender.sendMessage(plugin.GRAY+"  [" +rs.getInt("id") +plugin.GRAY+"]"+"         "+rs.getString("target")+"          "+rs.getString("date"));
         }
       }
+      sender.sendMessage(plugin.GRAY+"(deleted/expired messages will not be displayed)");
       rs.close();
     } catch(Exception e) {
       plugin.log.info("[SimpleMail] "+"Error: "+e);        
@@ -54,8 +55,7 @@ public class inbox implements CommandExecutor {
         player.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"Error: "+plugin.WHITE+e);
       }
     }
-
-    return true;    
+    
+    return true;
   }
-
 }

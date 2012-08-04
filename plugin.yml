@@ -1,6 +1,6 @@
 name: SimpleMail
 main: me.odium.test.simplemail
-version: 0.2
+version: 0.3.7
 commands:
    mail:
       aliases: [simplemail]
@@ -15,6 +15,10 @@ commands:
       description: View your inbox
       permission: SimpleMail.inbox
       usage: /inbox
+   outbox:
+      description: View your outbox
+      permission: SimpleMail.outbox
+      usage: /outbox
    readmail:
       description: Read a message
       permission: SimpleMail.inbox
@@ -29,5 +33,9 @@ commands:
       usage: /mailboxes
    clearmailbox:
       description: clear an active mailbox
-      permission: SimpleMail.clear
+      permission: SimpleMail.admin
       usage: /clearmailbox <player>
+   purgemail:
+      description: Purge expired messages rom database
+      permission: SimpleMail.admin
+      usage: /purgemail

@@ -54,7 +54,7 @@ public class sendmail implements CommandExecutor {
             String details = sb.toString();  
 
             String Rightnow = plugin.getCurrentDTG("date");            
-            String target = plugin.myGetPlayerName(args[0]).toLowerCase();
+            String target = plugin.myGetPlayerName(args[0]);
 
             ResultSet rs2 = stmt.executeQuery("SELECT COUNT(target) AS inboxtotal FROM SM_Mail WHERE target='"+target+"'");
             int MaxMailboxSize = plugin.getConfig().getInt("MaxMailboxSize");
@@ -63,16 +63,17 @@ public class sendmail implements CommandExecutor {
               rs2.close();
               return true;
             }
-            PreparedStatement statement = con.prepareStatement("insert into SM_MAIL values (?,?,?,?,?,?);");
+            PreparedStatement statement = con.prepareStatement("insert into SM_MAIL values (?,?,?,?,?,?,?);");
             if (player == null) {              
-              statement.setString(2, "Console");              
+              statement.setString(2, "console");              
 
               statement.setString(3, target);
               
               statement.setString(4, Rightnow);             
               statement.setString(5, details);
               
-              statement.setString(6, "NO");           
+              statement.setString(6, "NO");
+              statement.setString(7, "NONE"); 
               statement.executeUpdate();
               statement.close();
 
@@ -84,7 +85,7 @@ public class sendmail implements CommandExecutor {
               return true;
               
             } else {                        
-              statement.setString(2, player.getDisplayName());              
+              statement.setString(2, player.getName());              
 
               statement.setString(3, target);
               
@@ -92,6 +93,7 @@ public class sendmail implements CommandExecutor {
               statement.setString(5, details);
               
               statement.setString(6, "NO");
+              statement.setString(7, "NONE");
               statement.executeUpdate();
               statement.close();
               

@@ -1,9 +1,12 @@
 package me.odium.test;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import me.odium.test.simplemail;
 
 
 public class DBConnection {
@@ -20,10 +23,18 @@ public class DBConnection {
     public static synchronized DBConnection getInstance() {
         return instance;
     }
+    
+    /**
+     * We set the plugin that is to be used for these connections.
+     * @param plugin
+     */
+    public void setPlugin(simplemail plugin) {
+        this.plugin = plugin;
+    }
 
     public void setConnection() throws Exception {
         Class.forName("org.sqlite.JDBC");
-        con = DriverManager.getConnection("jdbc:sqlite:SimpleMail.db");
+        con = DriverManager.getConnection("jdbc:sqlite:"+plugin.getDataFolder().getAbsolutePath()+File.separator+"SimpleMail.db");
     }
 
     public Connection getConnection() {
@@ -38,7 +49,7 @@ public class DBConnection {
         Statement stmt;
         try {
             stmt = con.createStatement();
-            String queryC = "CREATE TABLE IF NOT EXISTS SM_Mail (id INTEGER PRIMARY KEY, sender varchar(16), target varchar(16), date timestamp, message varchar(30), read varchar(10))";
+            String queryC = "CREATE TABLE IF NOT EXISTS SM_Mail (id INTEGER PRIMARY KEY, sender varchar(16) collate nocase, target varchar(16) collate nocase, date timestamp, message varchar(30), read varchar(10), expiration timestamp)";
             stmt.executeUpdate(queryC);
         } catch(Exception e) {
             plugin.log.info("[SimpleMail] "+"Error: "+e);

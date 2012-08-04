@@ -1,4 +1,10 @@
 # MaxInboxSize: Max Mailbox Size Per User
-# ShowInboxOnJoin: If inbox is not empty and player has permissions, display inbox on player join.
-MaxMailboxSize: 5
-ShowInboxOnJoin: true
+# MailExpiration: Number OF DAYS before a read message expires (and is deleted)
+# ShowNewMessage: Show New Mail on player join
+# DelayInSeconds: Delay IN SECONDS before new message notification is displayed.
+#
+MaxMailboxSize: 6
+MailExpiration: 14
+OnPlayerJoin:
+  ShowNewMessages: true
+  DelayInSeconds: 3
