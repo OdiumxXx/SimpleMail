@@ -33,7 +33,7 @@ public class inbox implements CommandExecutor {
 
       con = service.getConnection();
       stmt = con.createStatement();
-      String targetnick = player.getName(); 
+      String targetnick = player.getName().toLowerCase(); 
 
       rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE target='" + targetnick + "'");        
       sender.sendMessage(plugin.GOLD+"- ID ----- FROM ----------- DATE ------");

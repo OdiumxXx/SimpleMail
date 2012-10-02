@@ -27,14 +27,14 @@ public class PListener implements Listener {
   public void onPlayerJoin(PlayerJoinEvent event) {
     if (plugin.getConfig().getBoolean("OnPlayerJoin.ShowNewMessages")) {
       final Player player = event.getPlayer();
-      String targetnick = player.getName();
+      String targetnick = player.getName().toLowerCase();
       Connection con;
       java.sql.Statement stmt;
       ResultSet rs;
       try {        
         con = service.getConnection();
         stmt = con.createStatement();
-        rs = stmt.executeQuery("SELECT COUNT(target) AS inboxtotal FROM SM_Mail WHERE target='"+targetnick.toLowerCase()+"' AND read='NO'");
+        rs = stmt.executeQuery("SELECT COUNT(target) AS inboxtotal FROM SM_Mail WHERE target='"+targetnick+"' AND read='NO'");
         final int id = rs.getInt("inboxtotal");
         if(player.hasPermission("simplemail.inbox") && id != 0) {
           int tempDelay = plugin.getConfig().getInt("OnPlayerJoin.DelayInSeconds");

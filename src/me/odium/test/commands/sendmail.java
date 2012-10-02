@@ -54,7 +54,7 @@ public class sendmail implements CommandExecutor {
             String details = sb.toString();  
 
             String Rightnow = plugin.getCurrentDTG("date");            
-            String target = plugin.myGetPlayerName(args[0]);
+            String target = plugin.myGetPlayerName(args[0]).toLowerCase();
 
             ResultSet rs2 = stmt.executeQuery("SELECT COUNT(target) AS inboxtotal FROM SM_Mail WHERE target='"+target+"'");
             int MaxMailboxSize = plugin.getConfig().getInt("MaxMailboxSize");

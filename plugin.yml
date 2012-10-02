@@ -1,6 +1,6 @@
 name: SimpleMail
 main: me.odium.test.simplemail
-version: 0.3.7
+version: 0.3.8
 commands:
    mail:
       aliases: [simplemail]

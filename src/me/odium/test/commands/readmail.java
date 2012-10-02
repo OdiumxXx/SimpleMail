@@ -36,7 +36,7 @@ public class readmail implements CommandExecutor {
       try {
         con = service.getConnection();
         stmt = con.createStatement();
-        String Playername = player.getName();
+        String Playername = player.getName().toLowerCase();
 
         rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE id='"+args[0]+"' AND target='"+Playername+"'");
         String date = rs.getString("date");

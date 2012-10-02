@@ -34,13 +34,13 @@ public class delmail implements CommandExecutor {
     java.sql.Statement stmt;
     Connection con;
     try {
-      String Playername = player.getDisplayName().toLowerCase();
+      String Playername = player.getName().toLowerCase();
       con = service.getConnection();
       stmt = con.createStatement();
 
       rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE id='" + args[0] + "'");
 
-      if (!rs.getString("target").contains(Playername)) {
+      if (!rs.getString("target").equalsIgnoreCase(Playername)) {
         sender.sendMessage(plugin.GRAY+"[SimpleMail] "+plugin.RED+"This is not your message to delete or it does not exist. ");
       } else {
         stmt.executeUpdate("DELETE FROM SM_Mail WHERE id='"+args[0]+"' AND target='"+Playername+"'");

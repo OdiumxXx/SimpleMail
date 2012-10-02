@@ -24,6 +24,7 @@ public class mail implements CommandExecutor {
       if (player == null) {
         sender.sendMessage(ChatColor.GOLD+"[ SimpleMail "+plugin.getDescription().getVersion()+" ]");
         sender.sendMessage(plugin.GREEN+" /inbox " +plugin.WHITE+"- Check your inbox");
+        sender.sendMessage(plugin.GREEN+" /outbox " +plugin.WHITE+"- Display your outbox");
         sender.sendMessage(plugin.GREEN+" /sendmail <player> <msg> " +plugin.WHITE+"- Send a message");
         sender.sendMessage(plugin.GREEN+" /readmail <id> " +plugin.WHITE+"- Read a message");
         sender.sendMessage(plugin.GREEN+" /delmail <id> " +plugin.WHITE+"- Delete a message");
@@ -32,7 +33,7 @@ public class mail implements CommandExecutor {
         sender.sendMessage(plugin.AQUA+" /clearmailbox <playername> " +plugin.WHITE+"- Clear an active mailbox");
         return true;
       }      
-      plugin.displayHelp(player);
+      plugin.displayHelp(sender);
       return true;
     } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
       if(player == null || player.hasPermission("simplemail.admin")) {

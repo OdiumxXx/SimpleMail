@@ -32,7 +32,7 @@ public class outbox implements CommandExecutor {
     try {
       con = service.getConnection();
       stmt = con.createStatement();
-      String ownernick = player.getName(); 
+      String ownernick = player.getName().toLowerCase(); 
 
       rs = stmt.executeQuery("SELECT * FROM SM_Mail WHERE sender='" + ownernick + "'");
       

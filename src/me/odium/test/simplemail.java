@@ -2,6 +2,7 @@ package me.odium.test;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +21,7 @@ import me.odium.test.commands.sendmail;
 import me.odium.test.listeners.PListener;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.FileConfigurationOptions;
 import org.bukkit.entity.Player;
@@ -122,6 +124,7 @@ public class simplemail extends JavaPlugin {
     try {
       con = service.getConnection();
       stmt = con.createStatement();
+      Statement stmt2 = con.createStatement();
       rs = stmt.executeQuery("SELECT * FROM SM_Mail");
       while(rs.next()){
         String date = rs.getString("date");
@@ -135,7 +138,7 @@ public class simplemail extends JavaPlugin {
           // COMPARE STRINGS
           int HasExpired = dateNEW.compareTo(expirationNEW);
           if (HasExpired >= 0) {
-            stmt.executeUpdate("DELETE FROM SM_Mail WHERE id='"+id+"'");
+            stmt2.executeUpdate("DELETE FROM SM_Mail WHERE id='"+id+"'");
             expirations++;          
           } 
         }
@@ -147,18 +150,18 @@ public class simplemail extends JavaPlugin {
     return expirations;
   }
 
-  public void displayHelp(Player player) {
-    player.sendMessage(GOLD+"[ SimpleMail "+getDescription().getVersion()+" ]");
-    player.sendMessage(GREEN+" /inbox " +WHITE+"- Check your inbox");
-    player.sendMessage(GREEN+" /outbox " +WHITE+"- Check your outbox");
-    player.sendMessage(GREEN+" /sendmail <player> <msg> " +WHITE+"- Send a message");
-    player.sendMessage(GREEN+" /readmail <id> " +WHITE+"- Read a message");
-    player.sendMessage(GREEN+" /delmail <id> " +WHITE+"- Delete a message");
-    if (player == null || player.hasPermission("SimpleMail.admin")) {     
-      player.sendMessage(GOLD+"[Admin Commands]");
-      player.sendMessage(AQUA+" /mailboxes " +WHITE+"- List active mailboxes");
-      player.sendMessage(AQUA+" /clearmailbox <playername> " +WHITE+"- Clear an active mailbox");      
-      player.sendMessage(AQUA+" /purgemail " +WHITE+"- Purge expired messages from DB");
+  public void displayHelp(CommandSender sender) {
+    sender.sendMessage(GOLD+"[ SimpleMail "+getDescription().getVersion()+" ]");
+    sender.sendMessage(GREEN+" /inbox " +WHITE+"- Check your inbox");
+    sender.sendMessage(GREEN+" /outbox " +WHITE+"- Check your outbox");
+    sender.sendMessage(GREEN+" /sendmail <player> <msg> " +WHITE+"- Send a message");
+    sender.sendMessage(GREEN+" /readmail <id> " +WHITE+"- Read a message");
+    sender.sendMessage(GREEN+" /delmail <id> " +WHITE+"- Delete a message");
+    if (sender == null || sender.hasPermission("SimpleMail.admin")) {     
+      sender.sendMessage(GOLD+"[Admin Commands]");
+      sender.sendMessage(AQUA+" /mailboxes " +WHITE+"- List active mailboxes");
+      sender.sendMessage(AQUA+" /clearmailbox <playername> " +WHITE+"- Clear an active mailbox");      
+      sender.sendMessage(AQUA+" /purgemail " +WHITE+"- Purge expired messages from DB");
     }
   }
 }
